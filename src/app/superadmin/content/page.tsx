@@ -98,7 +98,7 @@ const banners = [
     imageUrl:
       "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&h=300&fit=crop",
     ctaText: "Join Now",
-    ctaUrl: "/agent-login",
+        ctaUrl: "/?register=agent",
     position: "sidebar",
     isActive: false,
     startDate: "2024-01-01",
