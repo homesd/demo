@@ -58,7 +58,7 @@ import {
   testimonials,
   agents,
 } from "@/lib/data";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { LoginDialog } from "@/components/auth/login-dialog";
 import { AgentCard } from "@/components/agent-card";
