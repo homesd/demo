@@ -79,6 +79,7 @@ import { FilterSheet } from "@/components/filter-sheet";
 import { BottomNavBar } from "@/components/bottom-nav-bar";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { AgentRegistrationModal } from "@/components/auth/agent-registration-modal";
 
 type Package = (typeof allPackages)[0];
 
