@@ -86,7 +86,7 @@ export default function AgentLoginPage() {
           </p>
         </div>
 
-                {/* Demo Account Info */}
+                        {/* Demo Account Info */}
         <Card className="bg-blue-50 border-blue-200">
           <CardContent className="p-4">
             <h3 className="font-medium text-blue-900 mb-2">Demo Account</h3>
@@ -94,6 +94,17 @@ export default function AgentLoginPage() {
               <p><strong>Email:</strong> demo@agent.com</p>
               <p><strong>Password:</strong> demo123</p>
               <p className="text-blue-600 mt-2">Use these credentials to access the agent dashboard</p>
+              <Button
+                size="sm"
+                variant="outline"
+                className="mt-2"
+                onClick={() => {
+                  setEmail(demoAgent.email);
+                  setPassword(demoAgent.password);
+                }}
+              >
+                Auto-fill Demo Credentials
+              </Button>
             </div>
           </CardContent>
         </Card>
