@@ -1,4 +1,5 @@
 {
+  "/agent-dashboard/page": "app/agent-dashboard/page.js",
   "/agent-dashboard/registration/page": "app/agent-dashboard/registration/page.js",
   "/agent-login/page": "app/agent-login/page.js",
   "/packages/[slug]/page": "app/packages/[slug]/page.js",
