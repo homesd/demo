@@ -15,6 +15,7 @@ import {
   Home,
   Menu,
   X,
+  LogOut,
 } from "lucide-react";
 import AgentNavigation from "@/components/agent/agent-navigation";
 import { useEffect, useState } from "react";
