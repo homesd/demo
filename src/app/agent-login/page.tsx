@@ -38,13 +38,28 @@ export default function AgentLoginPage() {
     setIsLoading(true);
     setError("");
 
-    // Simulate API call delay
+        // Simulate API call delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    // Since we removed demo accounts, show a message about contacting support
-    setError(
-      "Please contact support to activate your agent account after registration approval."
-    );
+    // Check demo credentials
+    if (email === demoAgent.email && password === demoAgent.password) {
+      // Set agent session
+      localStorage.setItem(
+        "agent_session",
+        JSON.stringify({
+          id: demoAgent.id,
+          name: demoAgent.name,
+          plan: demoAgent.plan,
+          email: demoAgent.email,
+        }),
+      );
+
+      router.push("/agent-dashboard");
+    } else {
+      setError(
+        "Invalid email or password. Try the demo account: demo@agent.com / demo123"
+      );
+    }
 
     setIsLoading(false);
   };
