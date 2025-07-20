@@ -14,6 +14,7 @@ import {
   Clock,
   Home as HomeIcon,
   Briefcase,
+  Building2,
   Gem,
   Bell,
   CheckCircle,
