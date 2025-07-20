@@ -64,7 +64,18 @@ export default function AgentDashboardLayout({
               </Link>
               <span className="text-sm text-gray-500">Agent Dashboard</span>
             </div>
-            <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  localStorage.removeItem("agent_session");
+                  router.push("/");
+                }}
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
               <Button variant="outline" size="sm" asChild>
                 <Link href="/">
                   <Home className="h-4 w-4 mr-2" />
