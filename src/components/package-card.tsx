@@ -110,7 +110,7 @@ export const PackageCard = ({ pkg }: { pkg: Package }) => {
                   </Button>
                 </Link>
               ) : (
-                <Link href={`/payment/${pkg.id}`} passHref>
+                                <Link href={`/booking/${pkg.id}`} passHref>
                   <Button size="sm" className="flex-1 text-xs">
                     Book Now
                   </Button>
