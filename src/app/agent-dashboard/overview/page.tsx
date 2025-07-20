@@ -109,9 +109,9 @@ export default function AgentOverviewPage() {
               packages and receiving bookings.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+                    <CardContent>
             <Button asChild>
-              <Link href="/agent-dashboard/registration">
+              <Link href="/?register=agent">
                 <Building2 className="h-4 w-4 mr-2" />
                 Complete Registration
               </Link>
