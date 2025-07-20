@@ -20,9 +20,9 @@ const navigation = [
     href: "/agent-dashboard/overview",
     icon: Home,
   },
-  {
+    {
     name: "Registration",
-    href: "/agent-dashboard/registration",
+    href: "/?register=agent",
     icon: Building2,
   },
   {
