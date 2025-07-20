@@ -96,13 +96,16 @@ const AppHeader = () => {
             Roam Southeast
           </h1>
         </Link>
-        <div className="flex items-center gap-2">
-          <Link href="/agent-login" passHref>
-            <Button variant="outline" size="sm" className="hidden sm:flex">
-              <Briefcase className="h-4 w-4 mr-2" />
-              Agent Login
-            </Button>
-          </Link>
+                <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="hidden sm:flex"
+            onClick={() => setAgentRegistrationOpen(true)}
+          >
+            <Briefcase className="h-4 w-4 mr-2" />
+            Register Agent
+          </Button>
 
           <Link href="/superadmin" passHref>
             <Button variant="outline" size="sm" className="hidden sm:flex">
