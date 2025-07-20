@@ -223,9 +223,10 @@ export default function Home() {
   );
   const [activeDestination, setActiveDestination] = React.useState("All");
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [searchResults, setSearchResults] = React.useState<Package[]>([]);
+    const [searchResults, setSearchResults] = React.useState<Package[]>([]);
   const [showSearchResults, setShowSearchResults] = React.useState(false);
   const [open, setOpen] = useState<null | "about" | "contact" | "terms" | "privacy">(null);
+  const [agentRegistrationOpen, setAgentRegistrationOpen] = React.useState(false);
 
   const handleSearch = React.useCallback((query: string) => {
     setSearchQuery(query);
