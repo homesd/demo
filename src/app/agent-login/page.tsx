@@ -33,35 +33,41 @@ export default function AgentLoginPage() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
 
-        // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    // Check demo credentials
-    if (email === demoAgent.email && password === demoAgent.password) {
-      // Set agent session
-      localStorage.setItem(
-        "agent_session",
-        JSON.stringify({
-          id: demoAgent.id,
-          name: demoAgent.name,
-          plan: demoAgent.plan,
-          email: demoAgent.email,
-        }),
-      );
+      // Check demo credentials
+      if (email === demoAgent.email && password === demoAgent.password) {
+        // Set agent session
+        localStorage.setItem(
+          "agent_session",
+          JSON.stringify({
+            id: demoAgent.id,
+            name: demoAgent.name,
+            plan: demoAgent.plan,
+            email: demoAgent.email,
+          }),
+        );
 
-      router.push("/agent-dashboard");
-    } else {
-      setError(
-        "Invalid email or password. Try the demo account: demo@agent.com / demo123"
-      );
+        // Navigate to agent dashboard
+        router.push("/agent-dashboard");
+      } else {
+        setError(
+          "Invalid email or password. Try the demo account: demo@agent.com / demo123"
+        );
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("An error occurred during login. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   return (
