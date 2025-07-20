@@ -561,7 +561,13 @@ export default function Home() {
                   Your privacy is paramount. We collect personal data only to facilitate bookings and customer support. We do not share your information with third parties without your consent, and we implement industry-standard security measures to protect your data.
                 </p>
               </DialogContent>
-            </Dialog>
+                        </Dialog>
+
+            {/* Agent Registration Modal */}
+            <AgentRegistrationModal
+              open={agentRegistrationOpen}
+              onOpenChange={setAgentRegistrationOpen}
+            />
           </main>
 
           <BottomNavBar />
