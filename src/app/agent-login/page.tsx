@@ -16,6 +16,15 @@ import { Building2, Mail, Lock, Eye, EyeOff, LogIn } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+// Demo agent credentials
+const demoAgent = {
+  id: "agent_001",
+  email: "demo@agent.com",
+  password: "demo123",
+  name: "Travel Pro Agency",
+  plan: "growth",
+};
+
 export default function AgentLoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
