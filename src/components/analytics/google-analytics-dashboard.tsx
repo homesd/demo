@@ -74,21 +74,25 @@ interface GoogleAnalyticsProps {
 const generateAnalyticsData = (userRole: string, timeRange: string) => {
   const baseMultiplier = userRole === 'superadmin' ? 37 : 1;
   const timeMultiplier = timeRange === "1d" ? 0.1 : timeRange === "7d" ? 1 : timeRange === "30d" ? 4.3 : 13;
-  
+
+  // Use deterministic "random" values based on current data to avoid hydration issues
+  const seed = userRole.length + timeRange.length;
+  const deterministicRandom = (index: number) => ((seed + index) * 9301 + 49297) % 233280 / 233280;
+
   return {
     overview: {
       totalUsers: Math.round(1234 * baseMultiplier * timeMultiplier),
-      usersChange: (Math.random() * 30 - 5), // Random change between -5% and 25%
+      usersChange: (deterministicRandom(1) * 30 - 5),
       sessions: Math.round(2156 * baseMultiplier * timeMultiplier),
-      sessionsChange: (Math.random() * 20 - 3),
+      sessionsChange: (deterministicRandom(2) * 20 - 3),
       pageViews: Math.round(8945 * baseMultiplier * timeMultiplier),
-      pageViewsChange: (Math.random() * 25 - 2),
-      bounceRate: 35 + (Math.random() * 20),
-      bounceRateChange: (Math.random() * 10 - 5),
-      avgSessionDuration: `${Math.floor(Math.random() * 3) + 2}m ${Math.floor(Math.random() * 60)}s`,
-      durationChange: (Math.random() * 30 - 5),
-      conversionRate: 3 + (Math.random() * 2),
-      conversionChange: (Math.random() * 2 - 0.5),
+      pageViewsChange: (deterministicRandom(3) * 25 - 2),
+      bounceRate: 35 + (deterministicRandom(4) * 20),
+      bounceRateChange: (deterministicRandom(5) * 10 - 5),
+      avgSessionDuration: `${Math.floor(deterministicRandom(6) * 3) + 2}m ${Math.floor(deterministicRandom(7) * 60)}s`,
+      durationChange: (deterministicRandom(8) * 30 - 5),
+      conversionRate: 3 + (deterministicRandom(9) * 2),
+      conversionChange: (deterministicRandom(10) * 2 - 0.5),
     },
     traffic: Array.from({ length: timeRange === "1d" ? 24 : timeRange === "7d" ? 7 : timeRange === "30d" ? 30 : 90 }, (_, i) => ({
       date: new Date(Date.now() - (i * (timeRange === "1d" ? 3600000 : 86400000))).toISOString().split('T')[0],
