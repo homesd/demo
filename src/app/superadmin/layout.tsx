@@ -55,6 +55,10 @@ const SuperAdminSidebar = ({ className }: { className?: string }) => {
       label: "DMC Management",
       description: "Approve & Manage DMCs",
       badge: "3", // Pending approvals
+      submenu: [
+        { href: "/superadmin/agents", label: "All Agents" },
+        { href: "/superadmin/agents/approval", label: "Pending Approvals", badge: "3" }
+      ]
     },
     {
       href: "/superadmin/subscriptions",
@@ -69,6 +73,10 @@ const SuperAdminSidebar = ({ className }: { className?: string }) => {
       label: "Package Moderation",
       description: "Review & Approve Packages",
       badge: "7",
+      submenu: [
+        { href: "/superadmin/packages", label: "All Packages" },
+        { href: "/superadmin/packages/approval", label: "Pending Approvals", badge: "7" }
+      ]
     },
     {
       href: "/superadmin/bookings",
