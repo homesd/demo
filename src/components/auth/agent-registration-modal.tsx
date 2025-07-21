@@ -21,6 +21,8 @@ import {
   X,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase, supabaseHelpers } from "@/lib/supabaseClient";
+import { activityLogger } from "@/lib/services/activity-logger";
 
 interface AgentRegistrationModalProps {
   open: boolean;
@@ -71,7 +73,7 @@ export function AgentRegistrationModal({ open, onOpenChange }: AgentRegistration
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Validate form
     if (!formData.agreedToTerms || !formData.agreedToProcessing) {
       toast({
@@ -82,30 +84,121 @@ export function AgentRegistrationModal({ open, onOpenChange }: AgentRegistration
       return;
     }
 
-    toast({
-      title: "Registration Submitted",
-      description: "Your agent registration has been submitted for review. We'll contact you within 2-3 business days.",
-    });
+    try {
+      // First create user account
+      const { data: authUser, error: authError } = await supabase.auth.signUp({
+        email: formData.primaryContactEmail,
+        password: 'temp-password-' + Math.random(), // User will need to reset password
+        options: {
+          data: {
+            name: formData.primaryContactName,
+            role: 'agent'
+          }
+        }
+      });
 
-    // Reset form and close modal
-    setFormData({
-      companyName: "",
-      businessType: "",
-      gstinNumber: "",
-      panNumber: "",
-      registrationNumber: "",
-      primaryContactName: "",
-      primaryContactEmail: "",
-      primaryContactPhone: "",
-      businessAddress: "",
-      city: "",
-      state: "",
-      pincode: "",
-      agreedToTerms: false,
-      agreedToProcessing: false,
-    });
-    setCurrentStep(1);
-    onOpenChange(false);
+      if (authError) {
+        throw authError;
+      }
+
+      // Create user record
+      const { data: user, error: userError } = await supabase
+        .from('users')
+        .insert({
+          id: authUser.user?.id,
+          email: formData.primaryContactEmail,
+          name: formData.primaryContactName,
+          role: 'agent',
+          phone: formData.primaryContactPhone
+        })
+        .select()
+        .single();
+
+      if (userError) {
+        throw userError;
+      }
+
+      // Create agent profile (pending status)
+      const { data: agent, error: agentError } = await supabase
+        .from('agents')
+        .insert({
+          user_id: user.id,
+          company_name: formData.companyName,
+          company_address: `${formData.businessAddress}, ${formData.city}, ${formData.state} - ${formData.pincode}`,
+          license_number: formData.gstinNumber,
+          business_type: formData.businessType,
+          status: 'pending',
+          documents: {
+            pan_number: formData.panNumber,
+            gstin_number: formData.gstinNumber,
+            registration_number: formData.registrationNumber
+          }
+        })
+        .select()
+        .single();
+
+      if (agentError) {
+        throw agentError;
+      }
+
+      // Log activity
+      await activityLogger.logRegistration(user.id, 'agent', {
+        company_name: formData.companyName,
+        business_type: formData.businessType
+      });
+
+      // Send notification to super admins
+      const { data: superAdmins } = await supabase
+        .from('users')
+        .select('id')
+        .eq('role', 'super_admin');
+
+      if (superAdmins) {
+        for (const admin of superAdmins) {
+          await supabaseHelpers.sendNotification({
+            recipient_id: admin.id,
+            title: 'New Agent Registration',
+            message: `New agent registration from ${formData.companyName} is pending approval.`,
+            related_type: 'agent',
+            related_id: agent.id,
+            action_url: '/superadmin/agents/approval'
+          });
+        }
+      }
+
+      toast({
+        title: "Registration Submitted",
+        description: "Your agent registration has been submitted for review. You'll receive an email confirmation once approved.",
+      });
+
+      // Reset form and close modal
+      setFormData({
+        companyName: "",
+        businessType: "",
+        gstinNumber: "",
+        panNumber: "",
+        registrationNumber: "",
+        primaryContactName: "",
+        primaryContactEmail: "",
+        primaryContactPhone: "",
+        businessAddress: "",
+        city: "",
+        state: "",
+        pincode: "",
+        agreedToTerms: false,
+        agreedToProcessing: false,
+      });
+      setCurrentStep(1);
+      onOpenChange(false);
+
+    } catch (error) {
+      console.error('Registration error:', error);
+      toast({
+        title: "Registration Failed",
+        description: error instanceof Error ? error.message : "Failed to submit registration. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleClose = () => {
