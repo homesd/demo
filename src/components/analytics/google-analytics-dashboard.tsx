@@ -94,16 +94,19 @@ const generateAnalyticsData = (userRole: string, timeRange: string) => {
       conversionRate: 3 + (deterministicRandom(9) * 2),
       conversionChange: (deterministicRandom(10) * 2 - 0.5),
     },
-    traffic: Array.from({ length: timeRange === "1d" ? 24 : timeRange === "7d" ? 7 : timeRange === "30d" ? 30 : 90 }, (_, i) => ({
-      date: new Date(Date.now() - (i * (timeRange === "1d" ? 3600000 : 86400000))).toISOString().split('T')[0],
-      users: Math.floor(Math.random() * 500) + 800,
-      sessions: Math.floor(Math.random() * 800) + 1200,
-      pageViews: Math.floor(Math.random() * 1500) + 3000,
-    })).reverse(),
+    traffic: Array.from({ length: timeRange === "1d" ? 24 : timeRange === "7d" ? 7 : timeRange === "30d" ? 30 : 90 }, (_, i) => {
+      const baseDate = new Date('2024-01-01').getTime();
+      return {
+        date: new Date(baseDate + (i * (timeRange === "1d" ? 3600000 : 86400000))).toISOString().split('T')[0],
+        users: Math.floor(deterministicRandom(i + 20) * 500) + 800,
+        sessions: Math.floor(deterministicRandom(i + 30) * 800) + 1200,
+        pageViews: Math.floor(deterministicRandom(i + 40) * 1500) + 3000,
+      };
+    }),
     deviceTypes: [
-      { name: 'Mobile', value: 60 + Math.random() * 10, users: Math.round(2890 * baseMultiplier), color: '#0088FE' },
-      { name: 'Desktop', value: 25 + Math.random() * 8, users: Math.round(1244 * baseMultiplier), color: '#00C49F' },
-      { name: 'Tablet', value: 5 + Math.random() * 5, users: Math.round(311 * baseMultiplier), color: '#FFBB28' },
+      { name: 'Mobile', value: 60 + deterministicRandom(11) * 10, users: Math.round(2890 * baseMultiplier), color: '#0088FE' },
+      { name: 'Desktop', value: 25 + deterministicRandom(12) * 8, users: Math.round(1244 * baseMultiplier), color: '#00C49F' },
+      { name: 'Tablet', value: 5 + deterministicRandom(13) * 5, users: Math.round(311 * baseMultiplier), color: '#FFBB28' },
     ],
     topPages: [
       { page: '/', views: Math.round(12534 * baseMultiplier * timeMultiplier), bounce: 30 + Math.random() * 10, avgTime: '2m 45s' },
