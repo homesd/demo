@@ -125,23 +125,6 @@ const SuperAdminSidebar = ({ className }: { className?: string }) => {
     },
   ];
 
-  const handleLogout = () => {
-    localStorage.removeItem("superadmin_session");
-    router.push("/superadmin");
-  };
-
-  const handleNotifications = () => {
-    router.push("/superadmin/notifications");
-  };
-
-  const handleAccountSettings = () => {
-    router.push("/superadmin/account-settings");
-  };
-
-  const handleSecurity = () => {
-    router.push("/superadmin/security");
-  };
-
   return (
     <nav
       className={cn(
