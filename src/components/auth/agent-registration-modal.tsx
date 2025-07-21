@@ -54,14 +54,45 @@ export function AgentRegistrationModal({ open, onOpenChange }: AgentRegistration
     agreedToProcessing: false,
   });
 
+  const [emailError, setEmailError] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(true);
+
   const totalSteps = 3;
   const progress = (currentStep / totalSteps) * 100;
 
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  };
+
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+
+    // Real-time email validation
+    if (field === "primaryContactEmail" && typeof value === "string") {
+      if (value.trim() === "") {
+        setEmailError("");
+        setIsEmailValid(true);
+      } else if (!validateEmail(value)) {
+        setEmailError("Please enter a valid email address (e.g., user@company.com)");
+        setIsEmailValid(false);
+      } else {
+        setEmailError("");
+        setIsEmailValid(true);
+      }
+    }
   };
 
   const nextStep = () => {
+    // Additional validation for step 2 (email validation)
+    if (currentStep === 2) {
+      if (!isEmailValid || formData.primaryContactEmail.trim() === "") {
+        setEmailError("Please enter a valid email address before proceeding");
+        setIsEmailValid(false);
+        return;
+      }
+    }
+
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
     }
@@ -74,6 +105,19 @@ export function AgentRegistrationModal({ open, onOpenChange }: AgentRegistration
   };
 
   const handleSubmit = async () => {
+    // Final validation before submission
+    if (!isEmailValid || formData.primaryContactEmail.trim() === "") {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address before submitting.",
+        variant: "destructive",
+      });
+      setCurrentStep(2); // Go back to step 2 to fix email
+      setEmailError("Please enter a valid email address");
+      setIsEmailValid(false);
+      return;
+    }
+
     // Validate form
     if (!formData.agreedToTerms || !formData.agreedToProcessing) {
       toast({
@@ -207,24 +251,16 @@ export function AgentRegistrationModal({ open, onOpenChange }: AgentRegistration
   };
 
   const isStep1Valid = formData.companyName && formData.businessType && formData.gstinNumber && formData.panNumber;
-  const isStep2Valid = formData.primaryContactName && formData.primaryContactEmail && formData.primaryContactPhone && formData.businessAddress;
+  const isStep2Valid = formData.primaryContactName && formData.primaryContactEmail && formData.primaryContactPhone && formData.businessAddress && isEmailValid;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="relative">
+        <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-2xl">
             <Building2 className="h-6 w-6 text-primary" />
             Agent Registration
           </DialogTitle>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute right-0 top-0"
-            onClick={handleClose}
-          >
-            <X className="h-4 w-4" />
-          </Button>
         </DialogHeader>
 
         <div className="space-y-6">
@@ -335,8 +371,21 @@ export function AgentRegistrationModal({ open, onOpenChange }: AgentRegistration
                     type="email"
                     value={formData.primaryContactEmail}
                     onChange={(e) => handleInputChange("primaryContactEmail", e.target.value)}
-                    placeholder="Enter email address"
+                    placeholder="Enter email address (e.g., contact@company.com)"
+                    className={!isEmailValid ? "border-red-500 focus:border-red-500 focus:ring-red-500" : ""}
                   />
+                  {emailError && (
+                    <p className="text-sm text-red-600 flex items-center gap-1 mt-1">
+                      <X className="h-3 w-3" />
+                      {emailError}
+                    </p>
+                  )}
+                  {isEmailValid && formData.primaryContactEmail.trim() !== "" && (
+                    <p className="text-sm text-green-600 flex items-center gap-1 mt-1">
+                      <CheckCircle className="h-3 w-3" />
+                      Valid email address
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2 md:col-span-2">
