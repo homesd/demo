@@ -699,6 +699,10 @@ body {
   margin-top: auto;
 }
 
+.mb-12 {
+  margin-bottom: 3rem;
+}
+
 .line-clamp-2 {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -1111,6 +1115,10 @@ body {
   max-width: 48rem;
 }
 
+.max-w-none {
+  max-width: none;
+}
+
 .flex-1 {
   flex: 1;
 }
@@ -1221,6 +1229,14 @@ body {
 
 .select-none {
   user-select: none;
+}
+
+.list-inside {
+  list-style-position: inside;
+}
+
+.list-decimal {
+  list-style-type: decimal;
 }
 
 .grid-cols-1 {
@@ -2194,6 +2210,10 @@ body {
   padding-bottom: .5rem;
 }
 
+.pt-8 {
+  padding-top: 2rem;
+}
+
 .text-left {
   text-align: left;
 }
@@ -2301,6 +2321,10 @@ body {
 
 .leading-none {
   line-height: 1;
+}
+
+.leading-relaxed {
+  line-height: 1.625;
 }
 
 .tracking-tight {
@@ -4026,6 +4050,25 @@ body {
 @media (width >= 1280px) {
   .xl\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media print {
+  .print\:block {
+    display: block;
+  }
+
+  .print\:hidden {
+    display: none;
+  }
+
+  .print\:p-6 {
+    padding: 1.5rem;
+  }
+
+  .print\:text-xs {
+    font-size: .75rem;
+    line-height: 1rem;
   }
 }
 
