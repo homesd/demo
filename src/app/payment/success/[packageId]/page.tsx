@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { packages as allPackages } from "@/lib/data";
 import { notFound } from "next/navigation";
 import {
@@ -35,14 +36,17 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function PaymentSuccessPage({ params }: { params: { packageId: string } }) {
   const { toast } = useToast();
+  const searchParams = useSearchParams();
+  const bookingRef = searchParams.get('ref');
   const pkg = allPackages.find(p => p.id === Number(params.packageId));
   const [bookingDetails, setBookingDetails] = useState<any>(null);
+  const [confirmationData, setConfirmationData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   
   if (!pkg) return notFound();
 
   // Generate consistent booking details
-  const bookingId = `RST${params.packageId.padStart(3, '0')}${Date.now().toString().slice(-6)}`;
+  const bookingId = bookingRef || `RST${params.packageId.padStart(3, '0')}${Date.now().toString().slice(-6)}`;
   const confirmationNumber = `CNF-${Date.now().toString().slice(-8)}`;
   const bookingDate = new Date().toLocaleDateString('en-IN');
   const bookingTime = new Date().toLocaleTimeString('en-IN', { 
