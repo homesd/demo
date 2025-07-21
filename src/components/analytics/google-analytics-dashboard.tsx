@@ -73,6 +73,7 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
   const [timeRange, setTimeRange] = useState("7d");
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [analyticsData, setAnalyticsData] = useState(() => generateAnalyticsData(userRole, "7d"));
 
   // Mock Google Analytics data
   const analyticsData = {
