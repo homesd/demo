@@ -287,16 +287,16 @@ export default function SuperAdminDashboardPage() {
     alert("Exporting dashboard data as CSV...");
   };
 
-  return (
+  const PlatformOverviewContent = () => (
     <div className="space-y-6">
       {/* Header with Filters */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
-            Super Admin Dashboard
-          </h1>
+          <h2 className="text-2xl font-bold text-gray-900">
+            Platform Overview
+          </h2>
           <p className="text-gray-600">
-            Comprehensive platform overview and analytics
+            Comprehensive platform overview and business analytics
           </p>
         </div>
 
