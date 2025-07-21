@@ -72,11 +72,15 @@ interface GoogleAnalyticsProps {
 
 // Generate dynamic analytics data based on time range and user role
 const generateAnalyticsData = (userRole: string, timeRange: string) => {
+  return generateAnalyticsDataWithSeed(userRole, timeRange, userRole.length + timeRange.length);
+};
+
+const generateAnalyticsDataWithSeed = (userRole: string, timeRange: string, customSeed: number) => {
   const baseMultiplier = userRole === 'superadmin' ? 37 : 1;
   const timeMultiplier = timeRange === "1d" ? 0.1 : timeRange === "7d" ? 1 : timeRange === "30d" ? 4.3 : 13;
 
-  // Use deterministic "random" values based on current data to avoid hydration issues
-  const seed = userRole.length + timeRange.length;
+  // Use deterministic "random" values based on seed to avoid hydration issues
+  const seed = customSeed;
   const deterministicRandom = (index: number) => ((seed + index) * 9301 + 49297) % 233280 / 233280;
 
   return {
