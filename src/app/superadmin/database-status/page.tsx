@@ -164,7 +164,7 @@ export default function DatabaseStatusPage() {
                 <Alert key={index} className="border-red-200 bg-red-50">
                   <AlertDescription className="text-red-800">
                     {error}
-                  </Alert>
+                  </AlertDescription>
                 </Alert>
               ))}
             </div>
