@@ -877,6 +877,19 @@ function SuperAdminLayout({ children }) {
     const [isAuthenticated, setIsAuthenticated] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const pathname = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePathname"])();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
+    const handleLogout1 = ()=>{
+        localStorage.removeItem("superadmin_session");
+        router.push("/superadmin");
+    };
+    const handleNotifications = ()=>{
+        router.push("/superadmin/notifications");
+    };
+    const handleAccountSettings = ()=>{
+        router.push("/superadmin/account-settings");
+    };
+    const handleSecurity = ()=>{
+        router.push("/superadmin/security");
+    };
     // Check authentication status
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "SuperAdminLayout.useEffect": ()=>{
@@ -894,7 +907,7 @@ function SuperAdminLayout({ children }) {
             children: children
         }, void 0, false, {
             fileName: "[project]/src/app/superadmin/layout.tsx",
-            lineNumber: 226,
+            lineNumber: 243,
             columnNumber: 12
         }, this);
     }
@@ -906,12 +919,12 @@ function SuperAdminLayout({ children }) {
                 className: "hidden lg:block lg:w-72 lg:shrink-0",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SuperAdminSidebar, {}, void 0, false, {
                     fileName: "[project]/src/app/superadmin/layout.tsx",
-                    lineNumber: 234,
+                    lineNumber: 251,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/superadmin/layout.tsx",
-                lineNumber: 233,
+                lineNumber: 250,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -933,7 +946,7 @@ function SuperAdminLayout({ children }) {
                                                     className: "h-5 w-5"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                    lineNumber: 249,
+                                                    lineNumber: 266,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -941,18 +954,18 @@ function SuperAdminLayout({ children }) {
                                                     children: "Toggle navigation menu"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                    lineNumber: 250,
+                                                    lineNumber: 267,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/superadmin/layout.tsx",
-                                            lineNumber: 244,
+                                            lineNumber: 261,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/superadmin/layout.tsx",
-                                        lineNumber: 243,
+                                        lineNumber: 260,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$sheet$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SheetContent"], {
@@ -962,18 +975,18 @@ function SuperAdminLayout({ children }) {
                                             className: "w-full"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/superadmin/layout.tsx",
-                                            lineNumber: 254,
+                                            lineNumber: 271,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/superadmin/layout.tsx",
-                                        lineNumber: 253,
+                                        lineNumber: 270,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/superadmin/layout.tsx",
-                                lineNumber: 242,
+                                lineNumber: 259,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -983,12 +996,12 @@ function SuperAdminLayout({ children }) {
                                     children: "Platform Administration"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/superadmin/layout.tsx",
-                                    lineNumber: 260,
+                                    lineNumber: 277,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/superadmin/layout.tsx",
-                                lineNumber: 259,
+                                lineNumber: 276,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1005,7 +1018,7 @@ function SuperAdminLayout({ children }) {
                                                 className: "h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                lineNumber: 275,
+                                                lineNumber: 292,
                                                 columnNumber: 15
                                             }, this),
                                             pendingNotifications > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1014,13 +1027,13 @@ function SuperAdminLayout({ children }) {
                                                 children: pendingNotifications
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                lineNumber: 277,
+                                                lineNumber: 294,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/superadmin/layout.tsx",
-                                        lineNumber: 268,
+                                        lineNumber: 285,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenu"], {
@@ -1039,7 +1052,7 @@ function SuperAdminLayout({ children }) {
                                                                 alt: "Admin"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                                lineNumber: 295,
+                                                                lineNumber: 312,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$avatar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AvatarFallback"], {
@@ -1047,23 +1060,23 @@ function SuperAdminLayout({ children }) {
                                                                 children: "SA"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                                lineNumber: 296,
+                                                                lineNumber: 313,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                        lineNumber: 294,
+                                                        lineNumber: 311,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                    lineNumber: 289,
+                                                    lineNumber: 306,
                                                     columnNumber: 17
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                lineNumber: 288,
+                                                lineNumber: 305,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuContent"], {
@@ -1079,7 +1092,7 @@ function SuperAdminLayout({ children }) {
                                                                     children: "Super Admin"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                                    lineNumber: 305,
+                                                                    lineNumber: 322,
                                                                     columnNumber: 21
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1087,23 +1100,23 @@ function SuperAdminLayout({ children }) {
                                                                     children: "admin@roam.com"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                                    lineNumber: 306,
+                                                                    lineNumber: 323,
                                                                     columnNumber: 21
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                            lineNumber: 304,
+                                                            lineNumber: 321,
                                                             columnNumber: 19
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                        lineNumber: 303,
+                                                        lineNumber: 320,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {}, void 0, false, {
                                                         fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                        lineNumber: 311,
+                                                        lineNumber: 328,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
@@ -1114,14 +1127,14 @@ function SuperAdminLayout({ children }) {
                                                                 className: "h-4 w-4 mr-2"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                                lineNumber: 313,
+                                                                lineNumber: 330,
                                                                 columnNumber: 19
                                                             }, this),
                                                             "Account Settings"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                        lineNumber: 312,
+                                                        lineNumber: 329,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
@@ -1132,61 +1145,61 @@ function SuperAdminLayout({ children }) {
                                                                 className: "h-4 w-4 mr-2"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                                lineNumber: 317,
+                                                                lineNumber: 334,
                                                                 columnNumber: 19
                                                             }, this),
                                                             "Security"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                        lineNumber: 316,
+                                                        lineNumber: 333,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {}, void 0, false, {
                                                         fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                        lineNumber: 320,
+                                                        lineNumber: 337,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
-                                                        onClick: handleLogout,
+                                                        onClick: handleLogout1,
                                                         className: "text-red-600 cursor-pointer",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$log$2d$out$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__LogOut$3e$__["LogOut"], {
                                                                 className: "h-4 w-4 mr-2"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                                lineNumber: 322,
+                                                                lineNumber: 339,
                                                                 columnNumber: 19
                                                             }, this),
                                                             "Sign Out"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                        lineNumber: 321,
+                                                        lineNumber: 338,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/superadmin/layout.tsx",
-                                                lineNumber: 302,
+                                                lineNumber: 319,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/superadmin/layout.tsx",
-                                        lineNumber: 287,
+                                        lineNumber: 304,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/superadmin/layout.tsx",
-                                lineNumber: 266,
+                                lineNumber: 283,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/superadmin/layout.tsx",
-                        lineNumber: 240,
+                        lineNumber: 257,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
@@ -1196,24 +1209,24 @@ function SuperAdminLayout({ children }) {
                             children: children
                         }, void 0, false, {
                             fileName: "[project]/src/app/superadmin/layout.tsx",
-                            lineNumber: 332,
+                            lineNumber: 349,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/superadmin/layout.tsx",
-                        lineNumber: 331,
+                        lineNumber: 348,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/superadmin/layout.tsx",
-                lineNumber: 238,
+                lineNumber: 255,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/superadmin/layout.tsx",
-        lineNumber: 231,
+        lineNumber: 248,
         columnNumber: 5
     }, this);
 }
