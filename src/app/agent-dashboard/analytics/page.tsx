@@ -40,6 +40,7 @@ import {
   Filter,
   BarChart3,
   Activity,
+  Globe,
 } from "lucide-react";
 import { GoogleAnalyticsDashboard } from "@/components/analytics/google-analytics-dashboard";
 
@@ -167,13 +168,11 @@ export default function AnalyticsPage() {
     return change >= 0 ? "text-green-600" : "text-red-600";
   };
 
-  return (
+  const BusinessAnalyticsContent = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
-            Analytics Dashboard
-          </h1>
+          <h2 className="text-2xl font-bold text-gray-900">Business Analytics</h2>
           <p className="text-gray-600">
             Track your package performance and business metrics
           </p>
@@ -515,6 +514,42 @@ export default function AnalyticsPage() {
           </div>
         </CardContent>
       </Card>
+    </div>
+  );
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Analytics Dashboard
+          </h1>
+          <p className="text-gray-600">
+            Comprehensive analytics for your travel business
+          </p>
+        </div>
+      </div>
+
+      <Tabs defaultValue="google-analytics" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="google-analytics" className="flex items-center gap-2">
+            <Globe className="h-4 w-4" />
+            Google Analytics
+          </TabsTrigger>
+          <TabsTrigger value="business-analytics" className="flex items-center gap-2">
+            <BarChart3 className="h-4 w-4" />
+            Business Analytics
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="google-analytics">
+          <GoogleAnalyticsDashboard userRole="agent" />
+        </TabsContent>
+
+        <TabsContent value="business-analytics">
+          <BusinessAnalyticsContent />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
