@@ -69,14 +69,73 @@ interface GoogleAnalyticsProps {
   agentId?: string;
 }
 
+// Generate dynamic analytics data based on time range and user role
+const generateAnalyticsData = (userRole: string, timeRange: string) => {
+  const baseMultiplier = userRole === 'superadmin' ? 37 : 1;
+  const timeMultiplier = timeRange === "1d" ? 0.1 : timeRange === "7d" ? 1 : timeRange === "30d" ? 4.3 : 13;
+
+  return {
+    overview: {
+      totalUsers: Math.round(1234 * baseMultiplier * timeMultiplier),
+      usersChange: (Math.random() * 30 - 5), // Random change between -5% and 25%
+      sessions: Math.round(2156 * baseMultiplier * timeMultiplier),
+      sessionsChange: (Math.random() * 20 - 3),
+      pageViews: Math.round(8945 * baseMultiplier * timeMultiplier),
+      pageViewsChange: (Math.random() * 25 - 2),
+      bounceRate: 35 + (Math.random() * 20),
+      bounceRateChange: (Math.random() * 10 - 5),
+      avgSessionDuration: `${Math.floor(Math.random() * 3) + 2}m ${Math.floor(Math.random() * 60)}s`,
+      durationChange: (Math.random() * 30 - 5),
+      conversionRate: 3 + (Math.random() * 2),
+      conversionChange: (Math.random() * 2 - 0.5),
+    },
+    traffic: Array.from({ length: timeRange === "1d" ? 24 : timeRange === "7d" ? 7 : timeRange === "30d" ? 30 : 90 }, (_, i) => ({
+      date: new Date(Date.now() - (i * (timeRange === "1d" ? 3600000 : 86400000))).toISOString().split('T')[0],
+      users: Math.floor(Math.random() * 500) + 800,
+      sessions: Math.floor(Math.random() * 800) + 1200,
+      pageViews: Math.floor(Math.random() * 1500) + 3000,
+    })).reverse(),
+    deviceTypes: [
+      { name: 'Mobile', value: 60 + Math.random() * 10, users: Math.round(2890 * baseMultiplier), color: '#0088FE' },
+      { name: 'Desktop', value: 25 + Math.random() * 8, users: Math.round(1244 * baseMultiplier), color: '#00C49F' },
+      { name: 'Tablet', value: 5 + Math.random() * 5, users: Math.round(311 * baseMultiplier), color: '#FFBB28' },
+    ],
+    topPages: [
+      { page: '/', views: Math.round(12534 * baseMultiplier * timeMultiplier), bounce: 30 + Math.random() * 10, avgTime: '2m 45s' },
+      { page: '/packages', views: Math.round(8945 * baseMultiplier * timeMultiplier), bounce: 25 + Math.random() * 8, avgTime: '4m 12s' },
+      { page: '/packages/bali-discovery', views: Math.round(5672 * baseMultiplier * timeMultiplier), bounce: 20 + Math.random() * 8, avgTime: '5m 30s' },
+      { page: '/packages/thailand-adventure', views: Math.round(4321 * baseMultiplier * timeMultiplier), bounce: 22 + Math.random() * 8, avgTime: '4m 58s' },
+      { page: '/agent-login', views: Math.round(2145 * baseMultiplier * timeMultiplier), bounce: 40 + Math.random() * 10, avgTime: '1m 32s' },
+    ],
+    acquisitionChannels: [
+      { channel: 'Organic Search', sessions: Math.round(3456 * baseMultiplier * timeMultiplier), percentage: 35 + Math.random() * 15, color: '#8884d8' },
+      { channel: 'Direct', sessions: Math.round(2134 * baseMultiplier * timeMultiplier), percentage: 20 + Math.random() * 10, color: '#82ca9d' },
+      { channel: 'Social Media', sessions: Math.round(1523 * baseMultiplier * timeMultiplier), percentage: 15 + Math.random() * 10, color: '#ffc658' },
+      { channel: 'Referral', sessions: Math.round(892 * baseMultiplier * timeMultiplier), percentage: 8 + Math.random() * 7, color: '#ff7300' },
+      { channel: 'Email', sessions: Math.round(205 * baseMultiplier * timeMultiplier), percentage: 2 + Math.random() * 3, color: '#00ff00' },
+    ],
+    realTimeUsers: Math.round(847 * baseMultiplier * (timeRange === "1d" ? 0.8 : 1)),
+    countries: [
+      { country: 'India', users: Math.round(2345 * baseMultiplier * timeMultiplier), flag: '🇮🇳' },
+      { country: 'United States', users: Math.round(567 * baseMultiplier * timeMultiplier), flag: '🇺🇸' },
+      { country: 'United Kingdom', users: Math.round(234 * baseMultiplier * timeMultiplier), flag: '���🇧' },
+      { country: 'Australia', users: Math.round(198 * baseMultiplier * timeMultiplier), flag: '🇦🇺' },
+      { country: 'Canada', users: Math.round(145 * baseMultiplier * timeMultiplier), flag: '🇨🇦' },
+    ],
+  };
+};
+
 export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: GoogleAnalyticsProps) {
   const [timeRange, setTimeRange] = useState("7d");
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(new Date());
   const [analyticsData, setAnalyticsData] = useState(() => generateAnalyticsData(userRole, "7d"));
 
-  // Mock Google Analytics data
-  const analyticsData = {
+  // Update data when time range changes
+  useEffect(() => {
+    setAnalyticsData(generateAnalyticsData(userRole, timeRange));
+    setLastUpdated(new Date());
+  }, [timeRange, userRole]);
     overview: {
       totalUsers: userRole === 'superadmin' ? 45678 : 1234,
       usersChange: 15.3,
