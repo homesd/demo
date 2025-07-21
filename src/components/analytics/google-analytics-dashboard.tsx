@@ -63,6 +63,7 @@ import {
   ArrowUpRight,
   ArrowDownRight,
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface GoogleAnalyticsProps {
   userRole?: 'superadmin' | 'agent';
@@ -73,7 +74,7 @@ interface GoogleAnalyticsProps {
 const generateAnalyticsData = (userRole: string, timeRange: string) => {
   const baseMultiplier = userRole === 'superadmin' ? 37 : 1;
   const timeMultiplier = timeRange === "1d" ? 0.1 : timeRange === "7d" ? 1 : timeRange === "30d" ? 4.3 : 13;
-
+  
   return {
     overview: {
       totalUsers: Math.round(1234 * baseMultiplier * timeMultiplier),
@@ -118,7 +119,7 @@ const generateAnalyticsData = (userRole: string, timeRange: string) => {
     countries: [
       { country: 'India', users: Math.round(2345 * baseMultiplier * timeMultiplier), flag: '🇮🇳' },
       { country: 'United States', users: Math.round(567 * baseMultiplier * timeMultiplier), flag: '🇺🇸' },
-      { country: 'United Kingdom', users: Math.round(234 * baseMultiplier * timeMultiplier), flag: '���🇧' },
+      { country: 'United Kingdom', users: Math.round(234 * baseMultiplier * timeMultiplier), flag: '🇬🇧' },
       { country: 'Australia', users: Math.round(198 * baseMultiplier * timeMultiplier), flag: '🇦🇺' },
       { country: 'Canada', users: Math.round(145 * baseMultiplier * timeMultiplier), flag: '🇨🇦' },
     ],
@@ -126,6 +127,7 @@ const generateAnalyticsData = (userRole: string, timeRange: string) => {
 };
 
 export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: GoogleAnalyticsProps) {
+  const { toast } = useToast();
   const [timeRange, setTimeRange] = useState("7d");
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(new Date());
@@ -136,64 +138,53 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
     setAnalyticsData(generateAnalyticsData(userRole, timeRange));
     setLastUpdated(new Date());
   }, [timeRange, userRole]);
-    overview: {
-      totalUsers: userRole === 'superadmin' ? 45678 : 1234,
-      usersChange: 15.3,
-      sessions: userRole === 'superadmin' ? 89456 : 2156,
-      sessionsChange: 8.7,
-      pageViews: userRole === 'superadmin' ? 234567 : 8945,
-      pageViewsChange: 12.1,
-      bounceRate: 42.3,
-      bounceRateChange: -2.1,
-      avgSessionDuration: '3m 25s',
-      durationChange: 18.5,
-      conversionRate: 3.8,
-      conversionChange: 0.5,
-    },
-    traffic: [
-      { date: '2024-01-01', users: 1200, sessions: 1850, pageViews: 4200 },
-      { date: '2024-01-02', users: 1150, sessions: 1750, pageViews: 3900 },
-      { date: '2024-01-03', users: 1300, sessions: 2100, pageViews: 4800 },
-      { date: '2024-01-04', users: 1400, sessions: 2200, pageViews: 5100 },
-      { date: '2024-01-05', users: 1250, sessions: 1900, pageViews: 4300 },
-      { date: '2024-01-06', users: 1500, sessions: 2400, pageViews: 5600 },
-      { date: '2024-01-07', users: 1350, sessions: 2050, pageViews: 4750 },
-    ],
-    deviceTypes: [
-      { name: 'Mobile', value: 65, users: 2890, color: '#0088FE' },
-      { name: 'Desktop', value: 28, users: 1244, color: '#00C49F' },
-      { name: 'Tablet', value: 7, users: 311, color: '#FFBB28' },
-    ],
-    topPages: [
-      { page: '/', views: 12534, bounce: 35.2, avgTime: '2m 45s' },
-      { page: '/packages', views: 8945, bounce: 28.1, avgTime: '4m 12s' },
-      { page: '/packages/bali-discovery', views: 5672, bounce: 22.8, avgTime: '5m 30s' },
-      { page: '/packages/thailand-adventure', views: 4321, bounce: 25.5, avgTime: '4m 58s' },
-      { page: '/agent-login', views: 2145, bounce: 45.2, avgTime: '1m 32s' },
-    ],
-    acquisitionChannels: [
-      { channel: 'Organic Search', sessions: 3456, percentage: 42.1, color: '#8884d8' },
-      { channel: 'Direct', sessions: 2134, percentage: 26.0, color: '#82ca9d' },
-      { channel: 'Social Media', sessions: 1523, percentage: 18.5, color: '#ffc658' },
-      { channel: 'Referral', sessions: 892, percentage: 10.9, color: '#ff7300' },
-      { channel: 'Email', sessions: 205, percentage: 2.5, color: '#00ff00' },
-    ],
-    realTimeUsers: 847,
-    countries: [
-      { country: 'India', users: 2345, flag: '🇮🇳' },
-      { country: 'United States', users: 567, flag: '🇺🇸' },
-      { country: 'United Kingdom', users: 234, flag: '🇬🇧' },
-      { country: 'Australia', users: 198, flag: '🇦🇺' },
-      { country: 'Canada', users: 145, flag: '🇨🇦' },
-    ],
-  };
 
   const refreshData = () => {
     setIsLoading(true);
+    
+    toast({
+      title: "Refreshing Analytics",
+      description: "Fetching latest data from Google Analytics...",
+    });
+
     setTimeout(() => {
+      setAnalyticsData(generateAnalyticsData(userRole, timeRange));
       setLastUpdated(new Date());
       setIsLoading(false);
+      
+      toast({
+        title: "Data Updated",
+        description: "Google Analytics data has been refreshed successfully.",
+      });
     }, 2000);
+  };
+
+  const exportData = () => {
+    const csvData = [
+      ['Metric', 'Value', 'Change'],
+      ['Total Users', analyticsData.overview.totalUsers, `${analyticsData.overview.usersChange.toFixed(1)}%`],
+      ['Sessions', analyticsData.overview.sessions, `${analyticsData.overview.sessionsChange.toFixed(1)}%`],
+      ['Page Views', analyticsData.overview.pageViews, `${analyticsData.overview.pageViewsChange.toFixed(1)}%`],
+      ['Bounce Rate', `${analyticsData.overview.bounceRate.toFixed(1)}%`, `${analyticsData.overview.bounceRateChange.toFixed(1)}%`],
+      ['Avg Session Duration', analyticsData.overview.avgSessionDuration, `${analyticsData.overview.durationChange.toFixed(1)}%`],
+      ['Conversion Rate', `${analyticsData.overview.conversionRate.toFixed(1)}%`, `${analyticsData.overview.conversionChange.toFixed(1)}%`],
+    ];
+
+    const csvContent = csvData.map(row => row.join(',')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `google-analytics-${timeRange}-${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+
+    toast({
+      title: "Export Complete",
+      description: `Analytics data exported for ${timeRange} period.`,
+    });
   };
 
   const formatNumber = (num: number) => {
@@ -214,6 +205,16 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
     return change >= 0 ? 'text-green-600' : 'text-red-600';
   };
 
+  const getTimeRangeLabel = (range: string) => {
+    switch(range) {
+      case "1d": return "Last 24 hours";
+      case "7d": return "Last 7 days";
+      case "30d": return "Last 30 days";
+      case "90d": return "Last 3 months";
+      default: return "Last 7 days";
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -227,7 +228,7 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
             )}
           </h2>
           <p className="text-gray-600 mt-1">
-            Last updated: {lastUpdated.toLocaleString()}
+            Last updated: {lastUpdated.toLocaleString()} • Period: {getTimeRangeLabel(timeRange)}
           </p>
         </div>
         
@@ -254,7 +255,7 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
             Refresh
           </Button>
           
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={exportData}>
             <Download className="h-4 w-4 mr-2" />
             Export
           </Button>
@@ -289,7 +290,7 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
             <div className="text-2xl font-bold">{formatNumber(analyticsData.overview.totalUsers)}</div>
             <div className={`text-xs flex items-center gap-1 ${getChangeColor(analyticsData.overview.usersChange)}`}>
               {getChangeIcon(analyticsData.overview.usersChange)}
-              {Math.abs(analyticsData.overview.usersChange)}% from last period
+              {Math.abs(analyticsData.overview.usersChange).toFixed(1)}% from last period
             </div>
           </CardContent>
         </Card>
@@ -303,7 +304,7 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
             <div className="text-2xl font-bold">{formatNumber(analyticsData.overview.sessions)}</div>
             <div className={`text-xs flex items-center gap-1 ${getChangeColor(analyticsData.overview.sessionsChange)}`}>
               {getChangeIcon(analyticsData.overview.sessionsChange)}
-              {Math.abs(analyticsData.overview.sessionsChange)}% from last period
+              {Math.abs(analyticsData.overview.sessionsChange).toFixed(1)}% from last period
             </div>
           </CardContent>
         </Card>
@@ -317,7 +318,7 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
             <div className="text-2xl font-bold">{formatNumber(analyticsData.overview.pageViews)}</div>
             <div className={`text-xs flex items-center gap-1 ${getChangeColor(analyticsData.overview.pageViewsChange)}`}>
               {getChangeIcon(analyticsData.overview.pageViewsChange)}
-              {Math.abs(analyticsData.overview.pageViewsChange)}% from last period
+              {Math.abs(analyticsData.overview.pageViewsChange).toFixed(1)}% from last period
             </div>
           </CardContent>
         </Card>
@@ -328,10 +329,10 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.overview.bounceRate}%</div>
+            <div className="text-2xl font-bold">{analyticsData.overview.bounceRate.toFixed(1)}%</div>
             <div className={`text-xs flex items-center gap-1 ${getChangeColor(-analyticsData.overview.bounceRateChange)}`}>
               {getChangeIcon(-analyticsData.overview.bounceRateChange)}
-              {Math.abs(analyticsData.overview.bounceRateChange)}% from last period
+              {Math.abs(analyticsData.overview.bounceRateChange).toFixed(1)}% from last period
             </div>
           </CardContent>
         </Card>
@@ -345,7 +346,7 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
             <div className="text-2xl font-bold">{analyticsData.overview.avgSessionDuration}</div>
             <div className={`text-xs flex items-center gap-1 ${getChangeColor(analyticsData.overview.durationChange)}`}>
               {getChangeIcon(analyticsData.overview.durationChange)}
-              {Math.abs(analyticsData.overview.durationChange)}% from last period
+              {Math.abs(analyticsData.overview.durationChange).toFixed(1)}% from last period
             </div>
           </CardContent>
         </Card>
@@ -356,10 +357,10 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.overview.conversionRate}%</div>
+            <div className="text-2xl font-bold">{analyticsData.overview.conversionRate.toFixed(1)}%</div>
             <div className={`text-xs flex items-center gap-1 ${getChangeColor(analyticsData.overview.conversionChange)}`}>
               {getChangeIcon(analyticsData.overview.conversionChange)}
-              {Math.abs(analyticsData.overview.conversionChange)}% from last period
+              {Math.abs(analyticsData.overview.conversionChange).toFixed(1)}% from last period
             </div>
           </CardContent>
         </Card>
@@ -405,7 +406,7 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
-                  label={({ name, value }) => `${name} ${value}%`}
+                  label={({ name, value }) => `${name} ${value.toFixed(1)}%`}
                 >
                   {analyticsData.deviceTypes.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
@@ -461,7 +462,7 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
                   <TableRow key={index}>
                     <TableCell className="font-mono text-sm">{page.page}</TableCell>
                     <TableCell>{page.views.toLocaleString()}</TableCell>
-                    <TableCell>{page.bounce}%</TableCell>
+                    <TableCell>{page.bounce.toFixed(1)}%</TableCell>
                     <TableCell>{page.avgTime}</TableCell>
                   </TableRow>
                 ))}
@@ -501,19 +502,20 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
           <div className="flex items-start gap-4">
             <Globe className="h-6 w-6 text-blue-600 mt-1" />
             <div>
-              <h3 className="font-semibold text-blue-900">Google Analytics Integration</h3>
+              <h3 className="font-semibold text-blue-900">Google Analytics Integration Status</h3>
               <p className="text-sm text-blue-700 mt-1">
-                This dashboard shows real-time data from Google Analytics 4. Data is automatically 
-                refreshed every 15 minutes. For detailed analysis and custom reports, 
-                <a href="https://analytics.google.com" target="_blank" rel="noopener noreferrer" className="underline font-medium">
-                  visit Google Analytics directly
-                </a>.
+                ⚠️ <strong>Demo Mode:</strong> This dashboard shows simulated Google Analytics data for demonstration purposes. 
+                To connect real Google Analytics, you would need to integrate with the Google Analytics Reporting API using OAuth 2.0 authentication 
+                and your Google Analytics 4 property ID.
               </p>
               <div className="flex items-center gap-2 mt-3">
-                <Badge variant="secondary">GA4 Connected</Badge>
-                <Badge variant="secondary">Real-time Data</Badge>
-                <Badge variant="secondary">Auto-refresh: 15min</Badge>
+                <Badge variant="outline" className="bg-yellow-100 text-yellow-800">Demo Data</Badge>
+                <Badge variant="outline" className="bg-green-100 text-green-800">Real-time Updates</Badge>
+                <Badge variant="outline" className="bg-blue-100 text-blue-800">Exportable</Badge>
               </div>
+              <p className="text-xs text-blue-600 mt-2">
+                Data refreshes automatically when you change time ranges or click refresh. Export functionality downloads current view as CSV.
+              </p>
             </div>
           </div>
         </CardContent>
