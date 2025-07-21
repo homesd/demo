@@ -239,6 +239,41 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
     }
   };
 
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!isMounted) {
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+              <BarChart3 className="h-6 w-6 text-blue-600" />
+              Google Analytics
+              {userRole === 'superadmin' && (
+                <Badge variant="secondary" className="ml-2">Super Admin View</Badge>
+              )}
+            </h2>
+            <p className="text-gray-600 mt-1">
+              Loading analytics data...
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, i) => (
+            <Card key={i}>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Loading...</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">--</div>
+                <div className="text-xs text-gray-500">Loading data...</div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
