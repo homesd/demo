@@ -156,18 +156,22 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
   }, [timeRange, userRole, isMounted]);
 
   const refreshData = () => {
+    if (!isMounted) return;
+
     setIsLoading(true);
-    
+
     toast({
       title: "Refreshing Analytics",
       description: "Fetching latest data from Google Analytics...",
     });
 
     setTimeout(() => {
-      setAnalyticsData(generateAnalyticsData(userRole, timeRange));
+      // Create new data with a timestamp-based seed for variety
+      const refreshSeed = Math.floor(Date.now() / 60000); // Changes every minute
+      setAnalyticsData(generateAnalyticsDataWithSeed(userRole, timeRange, refreshSeed));
       setLastUpdated(new Date());
       setIsLoading(false);
-      
+
       toast({
         title: "Data Updated",
         description: "Google Analytics data has been refreshed successfully.",
