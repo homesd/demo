@@ -31,12 +31,15 @@ export function AuthCheck({ children, packageId }: AuthCheckProps) {
     setShowLoginModal(false);
   };
 
-  const handleModalClose = () => {
-    // Redirect back to package details if they cancel login
-    if (pkg) {
-      router.push(`/packages/${pkg.slug}`);
-    } else {
-      router.push('/');
+  const handleModalClose = (open: boolean) => {
+    setShowLoginModal(open);
+    if (!open && !user) {
+      // Redirect back to package details if they cancel login
+      if (pkg) {
+        router.push(`/packages/${pkg.slug}`);
+      } else {
+        router.push('/');
+      }
     }
   };
 
@@ -67,9 +70,9 @@ export function AuthCheck({ children, packageId }: AuthCheckProps) {
         </p>
       </div>
 
-      <LoginEnforcementModal 
-        open={showLoginModal} 
-        onOpenChange={setShowLoginModal}
+      <LoginEnforcementModal
+        open={showLoginModal}
+        onOpenChange={handleModalClose}
         onLoginSuccess={handleLoginSuccess}
         title="Please login to book your package"
         description={pkg ? `Sign in to book "${pkg.title}" and enjoy secure payments, direct agent communication, and more.` : "Please sign in to continue with your booking."}
