@@ -12,7 +12,9 @@ import { useAuth } from "@/components/auth/auth-context";
 import { useWishlist } from "@/components/context/wishlist-context";
 import { useCart } from "@/components/context/cart-context";
 import { useToast } from "@/hooks/use-toast";
+import { LoginEnforcementModal } from "@/components/auth/login-enforcement-modal";
 import { packages as allPackages, agents } from "@/lib/data";
+import { useRouter } from "next/navigation";
 
 type Package = (typeof allPackages)[0];
 
@@ -22,6 +24,8 @@ export const PackageCard = ({ pkg }: { pkg: Package }) => {
   const { user } = useAuth();
   const { toast } = useToast();
   const { items, addToCart } = useCart();
+  const router = useRouter();
+  const [showLoginModal, setShowLoginModal] = React.useState(false);
   // Check if this package is already in the cart
   const isInCart = items.some((item) => item.package.id === pkg.id);
 
@@ -44,7 +48,21 @@ export const PackageCard = ({ pkg }: { pkg: Package }) => {
     }
   };
 
+  const handleBookNow = () => {
+    if (!user) {
+      setShowLoginModal(true);
+      return;
+    }
+    router.push(`/booking/${pkg.id}`);
+  };
+
+  const handleLoginSuccess = () => {
+    setShowLoginModal(false);
+    router.push(`/booking/${pkg.id}`);
+  };
+
   return (
+    <>
     <Card className="overflow-hidden border-none shadow-lg transition-transform duration-300 hover:scale-105 flex flex-col">
       <CardContent className="p-0 flex flex-col flex-grow">
         <div className="relative">
@@ -110,11 +128,9 @@ export const PackageCard = ({ pkg }: { pkg: Package }) => {
                   </Button>
                 </Link>
               ) : (
-                                <Link href={`/booking/${pkg.id}`} passHref>
-                  <Button size="sm" className="flex-1 text-xs">
-                    Book Now
-                  </Button>
-                </Link>
+                <Button size="sm" className="flex-1 text-xs" onClick={handleBookNow}>
+                  Book Now
+                </Button>
               )}
             </div>
           )}
@@ -130,16 +146,9 @@ export const PackageCard = ({ pkg }: { pkg: Package }) => {
               <Button
                 size="sm"
                 className="flex-1 text-xs"
-                onClick={() => {
-                  toast({
-                    title: "Sign up to book instantly",
-                    description:
-                      "Create an account to add packages to cart and complete secure booking.",
-                    variant: "default",
-                  });
-                }}
+                onClick={() => setShowLoginModal(true)}
               >
-                Quick Book
+                Book Now
               </Button>
             </div>
           )}
@@ -171,5 +180,15 @@ export const PackageCard = ({ pkg }: { pkg: Package }) => {
         </div>
       </CardContent>
     </Card>
+
+    {/* Login Enforcement Modal */}
+    <LoginEnforcementModal
+      open={showLoginModal}
+      onOpenChange={setShowLoginModal}
+      onLoginSuccess={handleLoginSuccess}
+      title="Please login to book your package"
+      description={`Sign in to book "${pkg.title}" and enjoy secure payments, direct agent communication, and more.`}
+    />
+    </>
   );
 };
