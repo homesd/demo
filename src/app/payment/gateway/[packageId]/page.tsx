@@ -76,15 +76,34 @@ export default function PaymentGatewayPage({ params }: { params: { packageId: st
 
   const handlePayment = async () => {
     setIsProcessing(true);
-    
-    // Simulate payment processing
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    
-    // Clear booking details
-    localStorage.removeItem('bookingDetails');
-    
-    // Redirect to success page
-    router.push(`/payment/success/${pkg.id}`);
+
+    try {
+      // Generate booking reference
+      const bookingRef = `BK${Date.now().toString().slice(-8)}`;
+
+      // Simulate payment processing
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
+      // Store booking confirmation details
+      const confirmationData = {
+        bookingReference: bookingRef,
+        packageTitle: pkg.title,
+        paymentAmount: totalAmount,
+        paymentDate: new Date().toISOString(),
+        bookingDetails: bookingDetails
+      };
+
+      localStorage.setItem('bookingConfirmation', JSON.stringify(confirmationData));
+
+      // Clear booking details
+      localStorage.removeItem('bookingDetails');
+
+      // Redirect to success page
+      router.push(`/payment/success/${pkg.id}?ref=${bookingRef}`);
+    } catch (error) {
+      console.error('Payment failed:', error);
+      setIsProcessing(false);
+    }
   };
 
   const paymentMethods = [
