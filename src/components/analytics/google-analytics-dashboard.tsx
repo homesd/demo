@@ -237,7 +237,7 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
             )}
           </h2>
           <p className="text-gray-600 mt-1">
-            Last updated: {lastUpdated.toLocaleString()} • Period: {getTimeRangeLabel(timeRange)}
+            Last updated: {lastUpdated ? lastUpdated.toLocaleString() : 'Loading...'} • Period: {getTimeRangeLabel(timeRange)}
           </p>
         </div>
         
