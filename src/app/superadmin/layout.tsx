@@ -23,6 +23,7 @@ import {
   BarChart3,
   AlertTriangle,
   CheckCircle,
+  Database,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -114,6 +115,12 @@ const SuperAdminSidebar = ({ className }: { className?: string }) => {
       icon: Settings,
       label: "Platform Settings",
       description: "System Configuration",
+    },
+    {
+      href: "/superadmin/database-status",
+      icon: Database,
+      label: "Database Status",
+      description: "Verify Supabase Setup",
     },
   ];
 
