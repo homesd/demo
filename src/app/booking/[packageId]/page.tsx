@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { packages as allPackages } from "@/lib/data";
 import { notFound } from "next/navigation";
+import { AuthCheck } from "./auth-check";
 import {
   Card,
   CardContent,
@@ -69,7 +70,8 @@ export default function BookingDetailsPage({ params }: { params: { packageId: st
   const isFormValid = formData.firstName && formData.lastName && formData.email && formData.phone && formData.travelDate;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <AuthCheck packageId={params.packageId}>
+      <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
@@ -341,6 +343,7 @@ export default function BookingDetailsPage({ params }: { params: { packageId: st
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </AuthCheck>
   );
 }
