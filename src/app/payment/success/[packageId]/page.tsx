@@ -81,8 +81,20 @@ export default function PaymentSuccessPage({ params }: { params: { packageId: st
     };
     
     localStorage.setItem('lastSuccessfulBooking', JSON.stringify(successfulBooking));
+
+    // Show success toast if we have a booking reference
+    if (bookingRef) {
+      setTimeout(() => {
+        toast({
+          title: "🎉 Payment Successful!",
+          description: `Booking confirmed! Reference: ${bookingId}`,
+          duration: 6000,
+        });
+      }, 1500);
+    }
+
     setIsLoading(false);
-  }, [params.packageId, bookingId, confirmationNumber, bookingDate, bookingTime, pkg]);
+  }, [params.packageId, bookingId, confirmationNumber, bookingDate, bookingTime, pkg, bookingRef, toast]);
 
   const copyBookingId = () => {
     navigator.clipboard.writeText(bookingId);
