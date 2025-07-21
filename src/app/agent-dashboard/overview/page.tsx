@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import PlanLimitsWidget from "@/components/agent/plan-limits-widget";
+import { AgentStatusBanner } from "@/components/agent/agent-status-banner";
 import {
   Building2,
   CreditCard,
@@ -93,6 +94,9 @@ export default function AgentOverviewPage() {
           Manage your travel business with Roam Southeast
         </p>
       </div>
+
+      {/* Agent Status Banner */}
+      <AgentStatusBanner />
 
       {/* Registration Status */}
       {!agentData.isRegistered && (
