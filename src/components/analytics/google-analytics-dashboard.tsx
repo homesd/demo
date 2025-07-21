@@ -130,14 +130,23 @@ export function GoogleAnalyticsDashboard({ userRole = 'agent', agentId }: Google
   const { toast } = useToast();
   const [timeRange, setTimeRange] = useState("7d");
   const [isLoading, setIsLoading] = useState(false);
-  const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [analyticsData, setAnalyticsData] = useState(() => generateAnalyticsData(userRole, "7d"));
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Set mounted state and initial timestamp after hydration
+  useEffect(() => {
+    setIsMounted(true);
+    setLastUpdated(new Date());
+  }, []);
 
   // Update data when time range changes
   useEffect(() => {
-    setAnalyticsData(generateAnalyticsData(userRole, timeRange));
-    setLastUpdated(new Date());
-  }, [timeRange, userRole]);
+    if (isMounted) {
+      setAnalyticsData(generateAnalyticsData(userRole, timeRange));
+      setLastUpdated(new Date());
+    }
+  }, [timeRange, userRole, isMounted]);
 
   const refreshData = () => {
     setIsLoading(true);
