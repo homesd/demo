@@ -34,6 +34,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   IndianRupee,
   Users,
@@ -52,7 +53,10 @@ import {
   AlertTriangle,
   CheckCircle,
   Clock,
+  BarChart3,
+  Activity,
 } from "lucide-react";
+import { GoogleAnalyticsDashboard } from "@/components/analytics/google-analytics-dashboard";
 
 // Mock data for charts
 const monthlyRevenueData = [
