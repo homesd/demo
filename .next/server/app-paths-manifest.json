@@ -1,11 +1,13 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
   "/page": "app/page.js",
+  "/superadmin/account-settings/page": "app/superadmin/account-settings/page.js",
   "/superadmin/agents/page": "app/superadmin/agents/page.js",
   "/superadmin/bookings/page": "app/superadmin/bookings/page.js",
   "/superadmin/dashboard/page": "app/superadmin/dashboard/page.js",
   "/superadmin/notifications/page": "app/superadmin/notifications/page.js",
   "/superadmin/page": "app/superadmin/page.js",
   "/superadmin/payouts/page": "app/superadmin/payouts/page.js",
+  "/superadmin/security/page": "app/superadmin/security/page.js",
   "/superadmin/subscriptions/page": "app/superadmin/subscriptions/page.js"
 }
