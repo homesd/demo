@@ -681,4 +681,40 @@ export default function SuperAdminDashboardPage() {
       </Card>
     </div>
   );
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Super Admin Dashboard
+          </h1>
+          <p className="text-gray-600">
+            Comprehensive platform analytics and management
+          </p>
+        </div>
+      </div>
+
+      <Tabs defaultValue="google-analytics" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="google-analytics" className="flex items-center gap-2">
+            <Globe className="h-4 w-4" />
+            Google Analytics
+          </TabsTrigger>
+          <TabsTrigger value="platform-overview" className="flex items-center gap-2">
+            <BarChart3 className="h-4 w-4" />
+            Platform Overview
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="google-analytics">
+          <GoogleAnalyticsDashboard userRole="superadmin" />
+        </TabsContent>
+
+        <TabsContent value="platform-overview">
+          <PlatformOverviewContent />
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
 }
