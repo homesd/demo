@@ -251,6 +251,25 @@ export default function PaymentSuccessPage({ params }: { params: { packageId: st
                   </div>
                 </div>
 
+                {/* Payment Summary */}
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4 space-y-3">
+                  <h4 className="font-semibold text-green-800 mb-3">Payment Summary</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Package Price × {bookingDetails?.numberOfTravelers || 1}</span>
+                      <span>₹{baseAmount.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Taxes & Fees (18%)</span>
+                      <span>₹{taxAmount.toLocaleString()}</span>
+                    </div>
+                    <div className="border-t border-green-200 pt-2 flex justify-between font-bold">
+                      <span className="text-green-800">Total Paid</span>
+                      <span className="text-green-800">₹{totalAmount.toLocaleString()}</span>
+                    </div>
+                  </div>
+                </div>
+
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3 pt-4">
                   <Button onClick={downloadReceipt} className="flex-1" variant="default">
