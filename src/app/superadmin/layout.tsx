@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import {
   LayoutDashboard,
   Users,
@@ -129,6 +130,18 @@ const SuperAdminSidebar = ({ className }: { className?: string }) => {
     router.push("/superadmin");
   };
 
+  const handleNotifications = () => {
+    router.push("/superadmin/notifications");
+  };
+
+  const handleAccountSettings = () => {
+    router.push("/superadmin/account-settings");
+  };
+
+  const handleSecurity = () => {
+    router.push("/superadmin/security");
+  };
+
   return (
     <nav
       className={cn(
@@ -216,6 +229,7 @@ export default function SuperAdminLayout({
   const [pendingNotifications] = React.useState(5);
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   // Check authentication status
   React.useEffect(() => {
@@ -268,7 +282,13 @@ export default function SuperAdminLayout({
           {/* Right Actions */}
           <div className="flex items-center gap-3">
             {/* Notifications */}
-            <Button variant="outline" size="icon" className="relative">
+            <Button
+              variant="outline"
+              size="icon"
+              className="relative hover:bg-gray-100"
+              onClick={handleNotifications}
+              title="View notifications"
+            >
               <Bell className="h-4 w-4" />
               {pendingNotifications > 0 && (
                 <Badge
@@ -306,16 +326,16 @@ export default function SuperAdminLayout({
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleAccountSettings} className="cursor-pointer">
                   <Settings className="h-4 w-4 mr-2" />
                   Account Settings
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleSecurity} className="cursor-pointer">
                   <Shield className="h-4 w-4 mr-2" />
                   Security
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-600">
+                <DropdownMenuItem onClick={handleLogout} className="text-red-600 cursor-pointer">
                   <LogOut className="h-4 w-4 mr-2" />
                   Sign Out
                 </DropdownMenuItem>
