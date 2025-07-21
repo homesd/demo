@@ -43,6 +43,11 @@ const SuperAdminSidebar = ({ className }: { className?: string }) => {
   const pathname = usePathname();
   const router = useRouter();
 
+  const handleLogout = () => {
+    localStorage.removeItem("superadmin_session");
+    router.push("/superadmin");
+  };
+
   const navItems = [
     {
       href: "/superadmin/dashboard",
