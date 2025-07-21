@@ -232,6 +232,8 @@ export function AgentRegistrationModal({ open, onOpenChange }: AgentRegistration
         agreedToTerms: false,
         agreedToProcessing: false,
       });
+      setEmailError("");
+      setIsEmailValid(true);
       setCurrentStep(1);
       onOpenChange(false);
 
@@ -246,6 +248,8 @@ export function AgentRegistrationModal({ open, onOpenChange }: AgentRegistration
   };
 
   const handleClose = () => {
+    setEmailError("");
+    setIsEmailValid(true);
     setCurrentStep(1);
     onOpenChange(false);
   };
