@@ -458,9 +458,9 @@ export default function SuperAdminSubscriptionsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredSubscriptions.map((subscription) => {
-                  const statusInfo = statusConfig[subscription.status];
-                  const planInfo = planConfig[subscription.plan];
+                                {filteredSubscriptions.map((subscription) => {
+                  const statusInfo = statusConfig[subscription.status as keyof typeof statusConfig];
+                  const planInfo = planConfig[subscription.plan as keyof typeof planConfig];
                   const StatusIcon = statusInfo.icon;
 
                   return (

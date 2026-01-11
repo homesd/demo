@@ -23,6 +23,7 @@ import {
   BarChart3,
   AlertTriangle,
   CheckCircle,
+  Database,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -42,6 +43,11 @@ const SuperAdminSidebar = ({ className }: { className?: string }) => {
   const pathname = usePathname();
   const router = useRouter();
 
+  const handleLogout = () => {
+    localStorage.removeItem("superadmin_session");
+    router.push("/superadmin");
+  };
+
   const navItems = [
     {
       href: "/superadmin/dashboard",
@@ -55,6 +61,10 @@ const SuperAdminSidebar = ({ className }: { className?: string }) => {
       label: "DMC Management",
       description: "Approve & Manage DMCs",
       badge: "3", // Pending approvals
+      submenu: [
+        { href: "/superadmin/agents", label: "All Agents" },
+        { href: "/superadmin/agents/approval", label: "Pending Approvals", badge: "3" }
+      ]
     },
     {
       href: "/superadmin/subscriptions",
@@ -69,6 +79,10 @@ const SuperAdminSidebar = ({ className }: { className?: string }) => {
       label: "Package Moderation",
       description: "Review & Approve Packages",
       badge: "7",
+      submenu: [
+        { href: "/superadmin/packages", label: "All Packages" },
+        { href: "/superadmin/packages/approval", label: "Pending Approvals", badge: "7" }
+      ]
     },
     {
       href: "/superadmin/bookings",
@@ -107,12 +121,13 @@ const SuperAdminSidebar = ({ className }: { className?: string }) => {
       label: "Platform Settings",
       description: "System Configuration",
     },
+    {
+      href: "/superadmin/database-status",
+      icon: Database,
+      label: "Database Status",
+      description: "Verify Supabase Setup",
+    },
   ];
-
-  const handleLogout = () => {
-    localStorage.removeItem("superadmin_session");
-    router.push("/superadmin");
-  };
 
   return (
     <nav
@@ -201,6 +216,24 @@ export default function SuperAdminLayout({
   const [pendingNotifications] = React.useState(5);
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    localStorage.removeItem("superadmin_session");
+    router.push("/superadmin");
+  };
+
+  const handleNotifications = () => {
+    router.push("/superadmin/notifications");
+  };
+
+  const handleAccountSettings = () => {
+    router.push("/superadmin/account-settings");
+  };
+
+  const handleSecurity = () => {
+    router.push("/superadmin/security");
+  };
 
   // Check authentication status
   React.useEffect(() => {
@@ -253,7 +286,13 @@ export default function SuperAdminLayout({
           {/* Right Actions */}
           <div className="flex items-center gap-3">
             {/* Notifications */}
-            <Button variant="outline" size="icon" className="relative">
+            <Button
+              variant="outline"
+              size="icon"
+              className="relative hover:bg-gray-100"
+              onClick={handleNotifications}
+              title="View notifications"
+            >
               <Bell className="h-4 w-4" />
               {pendingNotifications > 0 && (
                 <Badge
@@ -291,16 +330,16 @@ export default function SuperAdminLayout({
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleAccountSettings} className="cursor-pointer">
                   <Settings className="h-4 w-4 mr-2" />
                   Account Settings
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleSecurity} className="cursor-pointer">
                   <Shield className="h-4 w-4 mr-2" />
                   Security
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-600">
+                <DropdownMenuItem onClick={handleLogout} className="text-red-600 cursor-pointer">
                   <LogOut className="h-4 w-4 mr-2" />
                   Sign Out
                 </DropdownMenuItem>

@@ -34,6 +34,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   IndianRupee,
   Users,
@@ -52,7 +53,10 @@ import {
   AlertTriangle,
   CheckCircle,
   Clock,
+  BarChart3,
+  Activity,
 } from "lucide-react";
+import { GoogleAnalyticsDashboard } from "@/components/analytics/google-analytics-dashboard";
 
 // Mock data for charts
 const monthlyRevenueData = [
@@ -283,16 +287,16 @@ export default function SuperAdminDashboardPage() {
     alert("Exporting dashboard data as CSV...");
   };
 
-  return (
+  const PlatformOverviewContent = () => (
     <div className="space-y-6">
       {/* Header with Filters */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
-            Super Admin Dashboard
-          </h1>
+          <h2 className="text-2xl font-bold text-gray-900">
+            Platform Overview
+          </h2>
           <p className="text-gray-600">
-            Comprehensive platform overview and analytics
+            Comprehensive platform overview and business analytics
           </p>
         </div>
 
@@ -675,6 +679,42 @@ export default function SuperAdminDashboardPage() {
           </div>
         </CardContent>
       </Card>
+    </div>
+  );
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Super Admin Dashboard
+          </h1>
+          <p className="text-gray-600">
+            Comprehensive platform analytics and management
+          </p>
+        </div>
+      </div>
+
+      <Tabs defaultValue="google-analytics" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="google-analytics" className="flex items-center gap-2">
+            <Globe className="h-4 w-4" />
+            Google Analytics
+          </TabsTrigger>
+          <TabsTrigger value="platform-overview" className="flex items-center gap-2">
+            <BarChart3 className="h-4 w-4" />
+            Platform Overview
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="google-analytics">
+          <GoogleAnalyticsDashboard userRole="superadmin" />
+        </TabsContent>
+
+        <TabsContent value="platform-overview">
+          <PlatformOverviewContent />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

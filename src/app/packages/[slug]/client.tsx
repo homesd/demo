@@ -55,6 +55,8 @@ import { useWishlist } from "@/components/context/wishlist-context";
 import { useAuth } from "@/components/auth/auth-context";
 import { useCart } from "@/components/context/cart-context";
 import { LoginDialog } from "@/components/auth/login-dialog";
+import { LoginEnforcementModal } from "@/components/auth/login-enforcement-modal";
+import { useRouter } from "next/navigation";
 
 type Package = (typeof allPackages)[0];
 type Agent = (typeof agents)[0];
@@ -162,6 +164,8 @@ export function PackageDetailsClient({
   const [showPayment, setShowPayment] = React.useState(false);
   const [paymentName, setPaymentName] = React.useState("");
   const [paymentEmail, setPaymentEmail] = React.useState("");
+  const [showLoginModal, setShowLoginModal] = React.useState(false);
+  const router = useRouter();
 
   const handleWishlistToggle = () => {
     const success = toggleWishlist(pkg.id);
@@ -242,6 +246,19 @@ export function PackageDetailsClient({
     setCurrentImageIndex(
       (prev) => (prev - 1 + packageImages.length) % packageImages.length,
     );
+  };
+
+  const handleBookNow = () => {
+    if (!user) {
+      setShowLoginModal(true);
+      return;
+    }
+    router.push(`/booking/${pkg.id}`);
+  };
+
+  const handleLoginSuccess = () => {
+    setShowLoginModal(false);
+    router.push(`/booking/${pkg.id}`);
   };
 
   if (!pkg || !agent) {
@@ -682,10 +699,10 @@ export function PackageDetailsClient({
                 <Button
                   size="lg"
                   className="flex-1 text-lg"
-                  onClick={() => setShowPayment(true)}
+                  onClick={handleBookNow}
                 >
                   <ShieldCheck className="mr-2 h-5 w-5" />
-                  Book Now - <span className="rupee-font">₹</span>{(
+                  Book Now - ₹{(
                     parseInt(pkg.price.replace(/,/g, "")) * travelers
                   ).toLocaleString()}
                 </Button>
@@ -783,6 +800,15 @@ export function PackageDetailsClient({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Login Enforcement Modal */}
+      <LoginEnforcementModal
+        open={showLoginModal}
+        onOpenChange={setShowLoginModal}
+        onLoginSuccess={handleLoginSuccess}
+        title="Please login to book your package"
+        description={`Sign in to book "${pkg.title}" and enjoy secure payments, direct agent communication, and more.`}
+      />
     </div>
   );
 }

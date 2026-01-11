@@ -14,6 +14,7 @@ import {
   Clock,
   Home as HomeIcon,
   Briefcase,
+  Building2,
   Gem,
   Bell,
   CheckCircle,
@@ -58,7 +59,7 @@ import {
   testimonials,
   agents,
 } from "@/lib/data";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { LoginDialog } from "@/components/auth/login-dialog";
 import { AgentCard } from "@/components/agent-card";
@@ -79,6 +80,7 @@ import { FilterSheet } from "@/components/filter-sheet";
 import { BottomNavBar } from "@/components/bottom-nav-bar";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { AgentRegistrationModal } from "@/components/auth/agent-registration-modal";
 
 type Package = (typeof allPackages)[0];
 
@@ -95,8 +97,8 @@ const AppHeader = () => {
             Roam Southeast
           </h1>
         </Link>
-        <div className="flex items-center gap-2">
-          <Link href="/agent-login" passHref>
+                        <div className="flex items-center gap-2">
+                    <Link href="/agent-login" passHref>
             <Button variant="outline" size="sm" className="hidden sm:flex">
               <Briefcase className="h-4 w-4 mr-2" />
               Agent Login
@@ -217,6 +219,7 @@ const GuestBenefitsSection = () => {
 };
 
 export default function Home() {
+  const searchParams = useSearchParams();
   const [packageList, setPackageList] = React.useState<Package[]>(
     allPackages.slice(0, 4),
   );
@@ -225,6 +228,14 @@ export default function Home() {
   const [searchResults, setSearchResults] = React.useState<Package[]>([]);
   const [showSearchResults, setShowSearchResults] = React.useState(false);
   const [open, setOpen] = useState<null | "about" | "contact" | "terms" | "privacy">(null);
+  const [agentRegistrationOpen, setAgentRegistrationOpen] = React.useState(false);
+
+  // Check if agent registration should be opened from URL parameter
+  React.useEffect(() => {
+    if (searchParams.get("register") === "agent") {
+      setAgentRegistrationOpen(true);
+    }
+  }, [searchParams]);
 
   const handleSearch = React.useCallback((query: string) => {
     setSearchQuery(query);
@@ -556,7 +567,13 @@ export default function Home() {
                   Your privacy is paramount. We collect personal data only to facilitate bookings and customer support. We do not share your information with third parties without your consent, and we implement industry-standard security measures to protect your data.
                 </p>
               </DialogContent>
-            </Dialog>
+                        </Dialog>
+
+            {/* Agent Registration Modal */}
+            <AgentRegistrationModal
+              open={agentRegistrationOpen}
+              onOpenChange={setAgentRegistrationOpen}
+            />
           </main>
 
           <BottomNavBar />

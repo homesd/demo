@@ -11,36 +11,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Building2, Mail, Lock, Eye, EyeOff, LogIn, Info } from "lucide-react";
+import { Building2, Mail, Lock, Eye, EyeOff, LogIn } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 // Demo agent credentials
-const demoAgents = [
-  {
-    id: "agent_001",
-    email: "demo@agent.com",
-    password: "demo123",
-    name: "Travel Pro Agency",
-    plan: "growth",
-  },
-  {
-    id: "agent_002",
-    email: "trial@agent.com",
-    password: "trial123",
-    name: "New Agent Trial",
-    plan: "trial",
-  },
-  {
-    id: "agent_003",
-    email: "pro@agent.com",
-    password: "pro123",
-    name: "Premium Travel Co",
-    plan: "pro",
-  },
-];
+const demoAgent = {
+  id: "agent_001",
+  email: "demo@agent.com",
+  password: "demo123",
+  name: "Travel Pro Agency",
+  plan: "growth",
+};
 
 export default function AgentLoginPage() {
   const [email, setEmail] = useState("");
@@ -50,44 +33,41 @@ export default function AgentLoginPage() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
 
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    // Check demo credentials
-    const agent = demoAgents.find(
-      (a) => a.email === email && a.password === password,
-    );
+      // Check demo credentials
+      if (email === demoAgent.email && password === demoAgent.password) {
+        // Set agent session
+        localStorage.setItem(
+          "agent_session",
+          JSON.stringify({
+            id: demoAgent.id,
+            name: demoAgent.name,
+            plan: demoAgent.plan,
+            email: demoAgent.email,
+          }),
+        );
 
-    if (agent) {
-      // In a real app, this would set proper authentication tokens
-      localStorage.setItem(
-        "agent_session",
-        JSON.stringify({
-          id: agent.id,
-          name: agent.name,
-          plan: agent.plan,
-          email: agent.email,
-        }),
-      );
-
-      router.push("/agent-dashboard");
-    } else {
-      setError(
-        "Invalid email or password. Please use the demo credentials provided.",
-      );
+        // Navigate to agent dashboard
+        router.push("/agent-dashboard");
+      } else {
+        setError(
+          "Invalid email or password. Try the demo account: demo@agent.com / demo123"
+        );
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("An error occurred during login. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
-  };
-
-  const handleDemoLogin = (agent: (typeof demoAgents)[0]) => {
-    setEmail(agent.email);
-    setPassword(agent.password);
   };
 
   return (
@@ -106,50 +86,26 @@ export default function AgentLoginPage() {
           </p>
         </div>
 
-        {/* Demo Credentials Info */}
-        <Alert>
-          <Info className="h-4 w-4" />
-          <AlertDescription>
-            <strong>Demo Login Available:</strong> Use any of the demo
-            credentials below to explore the agent dashboard features.
-          </AlertDescription>
-        </Alert>
-
-        {/* Demo Accounts */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Demo Accounts</CardTitle>
-            <CardDescription>
-              Click on any account to auto-fill login credentials
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {demoAgents.map((agent) => (
-              <div
-                key={agent.id}
-                className="flex items-center justify-between p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
-                onClick={() => handleDemoLogin(agent)}
+                        {/* Demo Account Info */}
+        <Card className="bg-blue-50 border-blue-200">
+          <CardContent className="p-4">
+            <h3 className="font-medium text-blue-900 mb-2">Demo Account</h3>
+            <div className="text-sm text-blue-800 space-y-1">
+              <p><strong>Email:</strong> demo@agent.com</p>
+              <p><strong>Password:</strong> demo123</p>
+              <p className="text-blue-600 mt-2">Use these credentials to access the agent dashboard</p>
+              <Button
+                size="sm"
+                variant="outline"
+                className="mt-2"
+                onClick={() => {
+                  setEmail(demoAgent.email);
+                  setPassword(demoAgent.password);
+                }}
               >
-                <div>
-                  <p className="font-medium text-sm">{agent.name}</p>
-                  <p className="text-xs text-gray-500">{agent.email}</p>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Badge
-                    variant={
-                      agent.plan === "trial"
-                        ? "secondary"
-                        : agent.plan === "growth"
-                          ? "default"
-                          : "outline"
-                    }
-                  >
-                    {agent.plan}
-                  </Badge>
-                  <span className="text-xs text-gray-400">•••</span>
-                </div>
-              </div>
-            ))}
+                Auto-fill Demo Credentials
+              </Button>
+            </div>
           </CardContent>
         </Card>
 
@@ -157,6 +113,9 @@ export default function AgentLoginPage() {
         <Card>
           <CardHeader>
             <CardTitle>Sign In</CardTitle>
+            <CardDescription>
+              Enter your registered agent credentials to access the dashboard
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">
@@ -232,12 +191,12 @@ export default function AgentLoginPage() {
         <div className="text-center space-y-2">
           <p className="text-sm text-gray-600">
             Don't have an agent account?{" "}
-            <Link
-              href="/agent-dashboard/registration"
+            <button
+              onClick={() => router.push("/?register=agent")}
               className="text-blue-600 hover:underline"
             >
               Register as Agent
-            </Link>
+            </button>
           </p>
           <p className="text-sm text-gray-600">
             <Link href="/" className="text-blue-600 hover:underline">
@@ -246,17 +205,17 @@ export default function AgentLoginPage() {
           </p>
         </div>
 
-        {/* System Requirements */}
+        {/* Agent System Info */}
         <Card className="bg-blue-50 border-blue-200">
           <CardContent className="p-4">
-            <h3 className="font-medium text-blue-900 mb-2">Demo System Info</h3>
+            <h3 className="font-medium text-blue-900 mb-2">Agent Dashboard Features</h3>
             <div className="text-sm text-blue-800 space-y-1">
-              <p>• Full agent dashboard with 7 sections</p>
-              <p>• Package management (CRUD operations)</p>
+              <p>• Package management and listing tools</p>
               <p>• Booking inbox with status tracking</p>
               <p>• Payout request system</p>
               <p>• Analytics dashboard with metrics</p>
               <p>• Subscription plan management</p>
+              <p>• Customer communication tools</p>
             </div>
           </CardContent>
         </Card>

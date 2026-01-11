@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import PlanLimitsWidget from "@/components/agent/plan-limits-widget";
+import { AgentStatusBanner } from "@/components/agent/agent-status-banner";
 import {
   Building2,
   CreditCard,
@@ -94,6 +95,9 @@ export default function AgentOverviewPage() {
         </p>
       </div>
 
+      {/* Agent Status Banner */}
+      <AgentStatusBanner />
+
       {/* Registration Status */}
       {!agentData.isRegistered && (
         <Card className="border-orange-200 bg-orange-50">
@@ -109,9 +113,9 @@ export default function AgentOverviewPage() {
               packages and receiving bookings.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+                    <CardContent>
             <Button asChild>
-              <Link href="/agent-dashboard/registration">
+              <Link href="/?register=agent">
                 <Building2 className="h-4 w-4 mr-2" />
                 Complete Registration
               </Link>

@@ -21,11 +21,6 @@ const navigation = [
     icon: Home,
   },
   {
-    name: "Registration",
-    href: "/agent-dashboard/registration",
-    icon: Building2,
-  },
-  {
     name: "Subscription",
     href: "/agent-dashboard/subscription",
     icon: CreditCard,
